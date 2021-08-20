@@ -1,7 +1,12 @@
 import firebase from 'firebase';
-import {Component} from "react";
+import {Component, useEffect, useState,} from "react";
 import Login from "./components/Login/Login";
-import {BrowserRouter, Link, Route} from "react-router-dom";
+import {BrowserRouter, Route, Switch, useHistory} from "react-router-dom";
+
+import Hostel from "./components/Hostel/Hostel";
+import ChooseHotel from "./components/chooseHotel/chooseHotel";
+import ChooseRoom from "./components/chooseRoom/chooseRoom";
+import Booked from "./components/booked/booked";
 
 
 firebase.initializeApp({
@@ -14,45 +19,22 @@ firebase.initializeApp({
 });
 
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isSigned: false
-        }
-    }
+const App = () => {
 
-    componentDidMount = () => {
-        firebase.auth().onAuthStateChanged(user => {
-            this.setState({isSigned: !!user})
-        })
+    return (
 
-        if (!this.state.isSigned && window.location.pathname !== "/login") {
-            window.location.href = "/login";
-        }
-    }
-
-
-    render() {
-        return (
-            <BrowserRouter>
-                <switch>
-                    <main className="d-flex justify-content-center align-items-center main-container">
-                        {
-                            this.state.isSigned ?
-                                (
-                                    <>
-                                        <div>Signed in</div>
-                                        <button onClick={() => firebase.auth().signOut()}>Sign out</button>
-                                    </>
-                                )
-                                : <Route path="/login" component={Login}/>
-                        }
-                    </main>
-                </switch>
-            </BrowserRouter>
-        );
-    }
-}
+        <BrowserRouter>
+            <Switch>
+                <main className="d-flex justify-content-center align-items-center main-container">
+                    <Route exact path={"/"} component={Hostel}/>
+                    <Route path={"/login"} component={Login}/>
+                    <Route path={"/choose-hostel"} component={ChooseHotel}/>
+                    <Route path={"/choose-room"} component={ChooseRoom}/>
+                    <Route path={"/booked"} component={Booked}/>
+                </main>
+            </Switch>
+        </BrowserRouter>
+    );
+};
 
 export default App;
