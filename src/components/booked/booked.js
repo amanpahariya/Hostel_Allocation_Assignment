@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import firebase from "firebase";
 
 function Booked(props) {
     const [hostel, setHostel] = useState(null);
     const [room, setRoom] = useState(null);
 
     const history = useHistory();
+
+    useEffect(async () => {
+        await firebase.auth().onAuthStateChanged(user => {
+            if (user === null) {
+                history.push("/login")
+            }
+        })
+
+    }, [])
+
     useEffect(() => {
         if (window.localStorage.getItem("hostel")) {
             setHostel(window.localStorage.getItem("hostel"))

@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
+import firebase from "firebase";
 
 function ChooseHotel(props) {
 
@@ -7,6 +8,16 @@ function ChooseHotel(props) {
     const [hostel, setHostel] = useState(false);
 
     const history = useHistory();
+
+    useEffect(async () => {
+        await firebase.auth().onAuthStateChanged(user => {
+            if (user === null) {
+                history.push("/login")
+            }
+        })
+
+    }, [])
+
 
 
     function selectedHostel(e) {

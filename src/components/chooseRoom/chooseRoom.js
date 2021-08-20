@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Select from 'react-select'
 import {useHistory} from "react-router-dom";
+import firebase from "firebase";
 
 const options = [
     {value: '1st Floor', label: '1st Floor'},
@@ -16,6 +17,16 @@ function ChooseRoom(props) {
     const [room, setRoom] = useState(null);
 
     const history = useHistory();
+
+    useEffect(async () => {
+        await firebase.auth().onAuthStateChanged(user => {
+            if (user === null) {
+                history.push("/login")
+            }
+        })
+
+    }, [])
+
 
     function selectFloor(e) {
         setRoom(null);
